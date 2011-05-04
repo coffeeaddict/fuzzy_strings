@@ -58,4 +58,23 @@ describe "FuzzyStrings" do
     match = @fs.compare("chicken")
     match.match?.should == false
   end
+
+  it "does extended matching 1" do
+    match = @fs.compare('papadums')
+    match.match?(:deletions => 1, :substitutions => 5).should == true
+    match.match?(:deletions => 0).should == false
+  end
+
+  it "does extended matching 2" do
+    match = @fs.compare('ptatenr')
+    match.match?(:substitutions => 4, :transpositions => 1).should == false
+    match.match?(:substitutions => 2, :transpositions => 2).should == false
+    match.match?(:substitutions => 4, :transpositions => 2).should == true
+  end
+
+  it "does extended matching 2" do
+    match = @fs.compare('patat')
+    match.match?(:insertions => 2, :substitutions => 2).should == true
+    match.match?(:insertions => 1).should == false
+  end
 end
